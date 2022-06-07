@@ -1,3 +1,14 @@
+let roundCounter = 0;
+let playerPoints = 0;
+let computerPoints = 0;
+
+const buttonRock = document.getElementById("button-rock");
+const buttonPaper = document.getElementById("button-paper");
+const buttonScissors = document.getElementById("button-scissors");
+const computerPointsElement = document.getElementById("computer-points");
+const playerPointsElement = document.getElementById("player-points");
+const displayElement = document.getElementById("display");
+
 function computerPlay() {
     switch (Math.floor( Math.random() * 3 )) {
         case 0:
@@ -12,64 +23,84 @@ function computerPlay() {
     }
 }
 
-function playRound( playerSelection, computerSelection ) {
-    
-    let lowerCasePlayerSelection = playerSelection.toLowerCase();
-    
-    if ( lowerCasePlayerSelection == computerSelection ) {
-        return "It's a tie!";
-    } else if ( lowerCasePlayerSelection == "rock" ) {
-        switch ( computerSelection ) {
+function playRound( computerChoice, playerChoice ) {
+   if( computerChoice == playerChoice ) {
+       return "tie";
+   }
+   
+   if( computerChoice == "rock" ) {
+       switch( playerChoice ) {
             case "paper":
-                return "Computer wins!";
+                return "player";
                 break;
             case "scissors":
-                return "Player wins!";
+                return "computer";
                 break;
-        }
-    } else if ( lowerCasePlayerSelection == "paper" ) {
-        switch ( computerSelection ) {
-            case "rock":
-                return "Player wins!";
-                break;
+       }
+    }
+
+    if( computerChoice == "paper" ) {
+        switch( playerChoice ) {
             case "scissors":
-                return "Computer wins!";
+                return "player";
+                break;
+            case "rock":
+                return "computer";
                 break;
         }
-    } else if ( lowerCasePlayerSelection == "scissors" ) {
-        switch ( computerSelection ) {
+    }
+
+    if( computerChoice == "scissors" ) {
+        switch( playerChoice ) {
             case "rock":
-                return "Computer wins!";
+                return "player";
                 break;
             case "paper":
-                return "Player wins!";
+                return "computer";
                 break;
         }
     }
 }
 
-function game( ) {
-    let playersChoice, computersChoice, playerPoints = 0, computerPoints = 0, round;
-    for( let i = 0; i < 5; i++ ) {
-        playersChoice = prompt( "What do you choose? Type \"rock\", \"paper\" or \"scissors\" !" );
-        computersChoice = computerPlay( );
-        round = playRound( playersChoice, computersChoice );
-        if ( round == "Player wins!" ) {
-            console.log( "Player's choice " + playersChoice + ", computer's choice: " + computersChoice + ". " + round );
-            playerPoints++;
-        } else if( round == "Computer wins!" ) {
-            console.log( "Player's choice " + playersChoice + ", computer's choice: " + computersChoice + ". " + round );
+function game( playerChoice ) {
+    switch( playRound( computerPlay(), playerChoice ) ) {
+        case "tie":
+            displayElement.innerText = "It's a tie!";
+            roundCounter++;
+            break;
+        case "computer":
+            displayElement.innerText = "Computer won this round!";
             computerPoints++;
-        } else {
-            console.log( round );
-        }
-    }
-    console.log( "Player's points: " + playerPoints + ", computer's points: " + computerPoints );
-    if( playerPoints > computerPoints ) {
-        console.log( "Player won this match! Congrats! :-)" );
-    } else if ( playerPoints < computerPoints ) {
-        console.log( "Computer won this match! It's unfortunate. :-(" );
-    } else {
-        console.log( "The match ended with a tie between you and the computer. Not bad. :-)" );
+            computerPointsElement.innerText = computerPoints;
+            roundCounter++;
+            break;
+        case "player":
+            displayElement.innerText = "You won this round!";
+            playerPoints++;
+            playerPointsElement.innerText = playerPoints;
+            roundCounter++;
+            break;
     }
 }
+
+function initGame( ) {
+    roundCounter = 0;
+    playerPoints = 0;
+    computerPoints = 0;
+    computerPointsElement.innerText = computerPoints + " points";
+    playerPointsElement.innerText = playerPoints + " points";
+}
+
+buttonRock.addEventListener( "click", () => {
+    game( "rock" );
+});
+
+buttonPaper.addEventListener( "click", () => {
+    game( "paper" );
+});
+
+buttonScissors.addEventListener( "click", () => {
+    game( "scissors" );
+});
+
+initGame();

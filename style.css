@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+* {
+    font-family: "Press Start 2P", monospace;
+    color: darkgreen;
+    background-color: black;
+    border: 2px double darkgreen;
+    box-sizing: border-box;
+}
+
+h1 {
+    font-size: 2rem;
+    text-align: center;
+}
+
+p {
+    text-align: center;
+}
+
+button {
+    margin: .5rem;
+    padding: 1rem;
+    flex: 1;
+}
+
+.no-border {
+    border: none;
+}
+
+.hide {
+    display: none;
+}
+
+.column-container {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1rem;
+    margin: 1rem;
+}
+
+.row-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.point-display {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    
+}
+
+#gamestate-display {
+    flex: 2;
+}
+
+#message, #computer-score, #player-score {
+    font-size: 1.5rem;
+}
+

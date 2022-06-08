@@ -1,26 +1,43 @@
 <!DOCTYPE html>
 
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>The Odin Project: Rock-Paper-Scissors</title>
-        <script src="./script.js" defer></script>
-    </head>
-    <body>
-        
-        <h1>ROCK, PAPER, SCISSORS</h1>
+<html lang="en" class="no-border">
 
-        <div id="computer-choice"></div>
-        <div id="computer-points"></div>
+<head>
+    <meta charset="utf-8">
+    <title>The Odin Project: Rock-Paper-Scissors</title>
+    <link rel="stylesheet" href="./style.css">
+    <script src="./script.js" defer></script>
+</head>
 
-        <div id="display"></div>
-        
-        <div id="player-choice"></div>
-        <div id="player-points"></div>
+<body class="no-border">
 
-        <button type="button" id="button-rock">ROCK</button>
-        <button type="button" id="button-paper">PAPER</button>
-        <button type="button" id="button-scissors">SCISSORS</button>
-    
-    </body>
+    <div class="column-container">
+        <h1 class="no-border">ROCK, PAPER, SCISSORS</h1>
+        <div class="row-container">
+            <div class="point-display column-container">
+                <p class="no-border">YOU</p>
+                <p id="player-score" class="no-border"></p>
+                <p class="no-border">point</p>
+            </div>
+            <div id="gamestate-display" class="column-container">
+                <p id="round-count" class="no-border"></p>
+                <p id="message" class="no-border"></p>
+                <button type="button" id="new-game">NEW GAME</button>
+            </div>
+            <div class="point-display column-container">
+                <p class="no-border">COMPUTER</p>
+                <p id="computer-score" class="no-border"></p>
+                <p class="no-border">point</p>
+            </div>
+        </div>
+        <div id="weapon-container" class="column-container">
+            <p class="no-border">CHOOSE YOUR WEAPON:</p>
+            <div class="row-container no-border">
+                <button type="button" id="rock">ROCK</button>
+                <button type="button" id="paper">PAPER</button>
+                <button type="button" id="scissors">SCISSORS</button>
+            </div>
+        </div>
+    </div>
+</body>
 </html>

@@ -1,13 +1,53 @@
 let roundCounter = 0;
-let playerPoints = 0;
-let computerPoints = 0;
+let playerScore = 0;
+let computerScore = 0;
 
-const buttonRock = document.getElementById("button-rock");
-const buttonPaper = document.getElementById("button-paper");
-const buttonScissors = document.getElementById("button-scissors");
-const computerPointsElement = document.getElementById("computer-points");
-const playerPointsElement = document.getElementById("player-points");
-const displayElement = document.getElementById("display");
+const computerScoreElement = document.getElementById( "computer-score" );
+const playerScoreElement = document.getElementById( "player-score" );
+const messageElement = document.getElementById( "message" );
+const roundCountElement = document.getElementById ( "round-count" );
+const newGameButton = document.getElementById( "new-game" );
+const weaponContainer = document.getElementById( "weapon-container" );
+const rockButton = document.getElementById( "rock" );
+const paperButton = document.getElementById( "paper" );
+const scissorsButton = document.getElementById( "scissors" );
+
+function showMessage( message ) {
+    messageElement.innerText = message;
+}
+
+function hideElement( element ) {
+    element.classList.add( "hide" );
+}
+
+function showElement( element ) {
+    element.classList.remove( "hide" );
+}
+
+function disableWeapons( ) {
+    rockButton.setAttribute("disabled", "");
+    paperButton.setAttribute("disabled", "");
+    scissorsButton.setAttribute("disabled", "");
+}
+
+function enableWeapons( ) {
+    rockButton.removeAttribute("disabled", "");
+    paperButton.removeAttribute("disabled", "");
+    scissorsButton.removeAttribute("disabled", "");
+}
+
+function resetGame( ) {
+    roundCounter = 0;
+    playerScore = 0;
+    computerScore = 0
+    showMessage( "" );
+    updateUI();
+}
+
+function updateUI( ) {
+    computerScoreElement.innerText = computerScore;
+    playerScoreElement.innerText = playerScore;
+}
 
 function computerPlay() {
     switch (Math.floor( Math.random() * 3 )) {
@@ -23,84 +63,64 @@ function computerPlay() {
     }
 }
 
-function playRound( computerChoice, playerChoice ) {
-   if( computerChoice == playerChoice ) {
-       return "tie";
+function compareChoices( computerChoice, playerChoice ) {
+    if ( computerChoice == playerChoice ) return "tie";
+    if (
+       computerChoice == "rock" &&  playerChoice == "scissors" ||
+       computerChoice == "paper" && playerChoice == "rock" ||
+       computerChoice == "scissors" && playerChoice == "paper" 
+   ) {
+       return "computer";
    }
-   
-   if( computerChoice == "rock" ) {
-       switch( playerChoice ) {
-            case "paper":
-                return "player";
-                break;
-            case "scissors":
-                return "computer";
-                break;
-       }
-    }
-
-    if( computerChoice == "paper" ) {
-        switch( playerChoice ) {
-            case "scissors":
-                return "player";
-                break;
-            case "rock":
-                return "computer";
-                break;
-        }
-    }
-
-    if( computerChoice == "scissors" ) {
-        switch( playerChoice ) {
-            case "rock":
-                return "player";
-                break;
-            case "paper":
-                return "computer";
-                break;
-        }
-    }
+   return "player";
 }
 
-function game( playerChoice ) {
-    switch( playRound( computerPlay(), playerChoice ) ) {
+function playRound( choice ) {
+    computersChoice = computerPlay();
+    switch( compareChoices( computersChoice, choice ) ) {
         case "tie":
-            displayElement.innerText = "It's a tie!";
-            roundCounter++;
+            showMessage( `The computers weapon: ${computersChoice}. It's a tie!` );
             break;
         case "computer":
-            displayElement.innerText = "Computer won this round!";
-            computerPoints++;
-            computerPointsElement.innerText = computerPoints;
-            roundCounter++;
+            showMessage( `The computers weapon: ${computersChoice}. The computer takes this round!` );
+            computerScore++;
             break;
         case "player":
-            displayElement.innerText = "You won this round!";
-            playerPoints++;
-            playerPointsElement.innerText = playerPoints;
-            roundCounter++;
+            showMessage( `The computers weapon: ${computersChoice}. This round is yours!` );
+            playerScore++;
             break;
+    }
+
+    roundCounter++;
+    roundCountElement.innerText = `ROUND ${roundCounter}`;
+    updateUI();
+
+    if( roundCounter == 5 ) {
+        gameEnd( );
     }
 }
 
-function initGame( ) {
-    roundCounter = 0;
-    playerPoints = 0;
-    computerPoints = 0;
-    computerPointsElement.innerText = computerPoints + " points";
-    playerPointsElement.innerText = playerPoints + " points";
+function gameEnd( ) {
+    if ( playerScore == computerScore ) {
+        showMessage( "It's a tie between you and the computer! Try again to beat it!" );
+    } else if ( playerScore > computerScore ) {
+        showMessage( "You won this match! Congratulations!" );
+    } else {
+        showMessage( "Unlucky you, the computer won this match! Maybe next time..." );
+    }
+    showElement( newGameButton );
+    disableWeapons();
 }
 
-buttonRock.addEventListener( "click", () => {
-    game( "rock" );
-});
+newGameButton.addEventListener( "click", () => {
+    hideElement( newGameButton );
+    resetGame();
+    enableWeapons();
+} )
 
-buttonPaper.addEventListener( "click", () => {
-    game( "paper" );
-});
+rockButton.addEventListener( "click", () => playRound( "rock" ) );
+paperButton.addEventListener( "click", () => playRound( "paper" ) );
+scissorsButton.addEventListener( "click", () => playRound( "scissors" ) );
 
-buttonScissors.addEventListener( "click", () => {
-    game( "scissors" );
-});
-
-initGame();
+showMessage( "Click to start a new game!" );
+disableWeapons();
